@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.fvgprinc.app.jpatestpkcomp.dl;
 
 import java.io.Serializable;
@@ -35,6 +39,9 @@ public class CuentaJpaController implements Serializable {
     }
 
     public void create(Cuenta cuenta) throws PreexistingEntityException, Exception {
+        if (cuenta.getId() == null) {
+            cuenta.setId(new CuentaId());
+        }
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -171,13 +178,12 @@ public class CuentaJpaController implements Serializable {
             em.close();
         }
     }
-            
 
     public Integer findMaxCuentaIdByClienteId(int clienteId) {
         EntityManager em = getEntityManager();
         Query query = em.createNativeQuery("SELECT IFNULL(MAX(c.idCuentaN), 0) AS RES FROM Cuenta c WHERE c.idClienteN = ?");
 
-        query.setParameter(1, Integer.toString( clienteId));
+        query.setParameter(1, Integer.toString(clienteId));
         Integer res = (Integer) query.getSingleResult();
         return res;
     }

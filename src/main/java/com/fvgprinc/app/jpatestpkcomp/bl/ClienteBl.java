@@ -37,5 +37,11 @@ public class ClienteBl {
         return clienteDl.leerDatos();
     }
 
+    public void eliminar(int idUsuario) {
+        clienteDl.eliminar(idUsuario);
+    }
+
+
+
     
 }

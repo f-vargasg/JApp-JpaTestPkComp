@@ -1,4 +1,3 @@
-
 package com.fvgprinc.app.jpatestpkcomp.ui;
 
 import com.fvgprinc.app.jpatestpkcomp.be.Cliente;
@@ -8,35 +7,31 @@ import com.fvgprinc.app.jpatestpkcomp.be.Cuenta;
 import com.fvgprinc.app.jpatestpkcomp.be.CuentaId;
 import com.fvgprinc.tools.utilities.MySwingUtil;
 import java.util.ArrayList;
-import java.util.List;
-
+import javax.swing.JTable;
 
 /**
  *
  * @author garfi
  */
-
-
 public class JfrmPrincipal extends javax.swing.JFrame {
 
     /**
      * Creates new form JfrmPrincipal
      */
-    
     ClienteBl clienteBl;
     CuentaBl cuentaBl;
-    
+
     public JfrmPrincipal() {
         initComponents();
         initMyComponents();
     }
-    
+
     private void initMyComponents() {
         this.clienteBl = new ClienteBl();
-        this.cuentaBl  = new CuentaBl();
+        this.cuentaBl = new CuentaBl();
         llenarTablaClientes();
         llenarTablaCuentas();
-        
+
     }
 
     private void llenarTablaClientes() {
@@ -44,7 +39,7 @@ public class JfrmPrincipal extends javax.swing.JFrame {
         ClienteTableModel modeloCliente = new ClienteTableModel(lst);
         jTblCliente.setModel(modeloCliente);
     }
-    
+
     private void llenarTablaCuentas() {
         ArrayList<Cuenta> lst = cuentaBl.leerDatos();
         CuentaTableModel modeloCuenta = new CuentaTableModel(lst);
@@ -76,7 +71,7 @@ public class JfrmPrincipal extends javax.swing.JFrame {
         jTblCuenta = new javax.swing.JTable();
         jBtnRefreshCuenta = new javax.swing.JButton();
         jBtnCrearCta = new javax.swing.JButton();
-        jBtnCrearCta1 = new javax.swing.JButton();
+        jBtnEditarCta = new javax.swing.JButton();
         jBtnDelCta = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -201,11 +196,11 @@ public class JfrmPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jBtnCrearCta1.setText("Editar Cuenta");
-        jBtnCrearCta1.setPreferredSize(new java.awt.Dimension(106, 23));
-        jBtnCrearCta1.addActionListener(new java.awt.event.ActionListener() {
+        jBtnEditarCta.setText("Editar Cuenta");
+        jBtnEditarCta.setPreferredSize(new java.awt.Dimension(106, 23));
+        jBtnEditarCta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBtnCrearCta1ActionPerformed(evt);
+                jBtnEditarCtaActionPerformed(evt);
             }
         });
 
@@ -232,7 +227,7 @@ public class JfrmPrincipal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBtnCrearCta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jBtnCrearCta1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jBtnEditarCta, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jBtnDelCta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -244,7 +239,7 @@ public class JfrmPrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPnlCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnCrearCta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jBtnCrearCta1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jBtnEditarCta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtnDelCta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jBtnRefreshCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
@@ -294,59 +289,103 @@ public class JfrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnExitActionPerformed
 
     private void jBtnCrearClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCrearClienteActionPerformed
-        ArrayList<Cuenta> lstCtas = new ArrayList<>();
-        
-        Cliente cliente = new Cliente(0,"Cliente1",lstCtas);
-        
-        // Guarda en la BD
-        clienteBl.crear(cliente);
-        MySwingUtil.mostrarMensaje("Cliente ingresada correctamente", MySwingUtil.TD_INFO, "Ingreso de Clientes");
-        
-      
+        Cliente cliente = null;
+        JfrmDlgClienteMnt jdcm = new JfrmDlgClienteMnt(this, true, clienteBl, cliente,
+                MySwingUtil.FrmStates.FRMINSERT);
+        jdcm.setLocationRelativeTo(this);
+        jdcm.setTitle("Crear Cliente");
+        jdcm.setVisible(true);
+
     }//GEN-LAST:event_jBtnCrearClienteActionPerformed
 
     private void jBtnCrearCtaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCrearCtaActionPerformed
-        Cliente cliente = clienteBl.buscarPorId (1);
-        
-        if (cliente != null) {
-            Cuenta cta = new Cuenta(new CuentaId(1, 0), "Cuenta de ahorros", cliente);
-            cuentaBl.crear(cta);
-            MySwingUtil.mostrarMensaje("Cuenta ingresada correctamente", MySwingUtil.TD_INFO, "Ingreso de cuentas");
-        }
-        
+        JfrmDlgCuentaMnt jdcm = new JfrmDlgCuentaMnt(this, true, clienteBl, cuentaBl, null,
+                MySwingUtil.FrmStates.FRMINSERT);
+        jdcm.setLocationRelativeTo(this);
+        jdcm.setTitle("Crear cuenta");
+        jdcm.setVisible(true);
+
     }//GEN-LAST:event_jBtnCrearCtaActionPerformed
 
     private void jBtnEditarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEditarClienteActionPerformed
-        
-        Cliente cliente = clienteBl.leerDatosPorId(1);
-        
-        for (Cuenta cta : cliente.getCuentas()) {
-            System.out.println("Cta : " + cta.toString() );
+        if (jTblCliente.getRowCount() > 0) {
+            // que se haya seleccionado un elemento
+            if (jTblCliente.getSelectedRow() != -1) {
+                // obtener el id del elemento a elminar
+                int idUsuario = Integer.parseInt(String.valueOf(jTblCliente.getValueAt(jTblCliente.getSelectedRow(), 0)));
+                Cliente cliente = clienteBl.leerDatosPorId(idUsuario);
+                // Editar Registro  (Ventana de edición)
+                JfrmDlgClienteMnt jfrmDlg = new JfrmDlgClienteMnt(this, true, clienteBl, cliente, MySwingUtil.FrmStates.FRMUPDATE);
+                jfrmDlg.setLocationRelativeTo(this);
+                jfrmDlg.setTitle("Editar Cliente");
+                jfrmDlg.setVisible(true);
+
+            } else {
+                MySwingUtil.mostrarMensaje("No seleccionó ningún registro", MySwingUtil.TD_ERROR, "Edición");
+            }
+        } else {
+            MySwingUtil.mostrarMensaje("La tabla está vacía", MySwingUtil.TD_ERROR, "Edición");
         }
-        
-        cliente.setNomCliente("Alvaro Solano");
-        clienteBl.modificar (cliente);
-        MySwingUtil.mostrarMensaje("Cliente modificado correctamente", MySwingUtil.TD_INFO, "Modificar Cliente");
-        
     }//GEN-LAST:event_jBtnEditarClienteActionPerformed
 
-    private void jBtnCrearCta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnCrearCta1ActionPerformed
-        CuentaId cuentaId = new CuentaId(1, 0);
-        Cuenta cuenta = cuentaBl.leerDatosPorId(cuentaId);
-        if (cuenta != null) {
-            cuenta.setNomCuenta("Cuenta 1-0");
-            cuentaBl.modifcar(cuenta);
-            MySwingUtil.mostrarMensaje("Cuenta modificado correctamente", MySwingUtil.TD_INFO, "Modificar Cuenta");
+    private void jBtnEditarCtaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEditarCtaActionPerformed
+        if (jTblCuenta.getRowCount() > 0) {
+            // que se haya seleccionado un elemento
+            if (jTblCuenta.getSelectedRow() != -1) {
+                // obtener el id del elemento a elminar
+                int idClienteN = Integer.parseInt(String.valueOf(jTblCuenta.getValueAt(jTblCuenta.getSelectedRow(), 0)));
+                int idCuentaN = Integer.parseInt(String.valueOf(jTblCuenta.getValueAt(jTblCuenta.getSelectedRow(), 1)));
+                CuentaId ctaId = new CuentaId(idClienteN, idCuentaN);
+                Cuenta cuenta = cuentaBl.leerDatosPorId(ctaId);
+                // Editar Registro  (Ventana de edición)
+                JfrmDlgCuentaMnt jfrmDlg = new JfrmDlgCuentaMnt(this, true, clienteBl, cuentaBl, cuenta, MySwingUtil.FrmStates.FRMUPDATE);
+                jfrmDlg.setLocationRelativeTo(this);
+                jfrmDlg.setTitle("Editar Cuenta");
+                jfrmDlg.setVisible(true);
+            } else {
+                MySwingUtil.mostrarMensaje("No seleccionó ningún registro", MySwingUtil.TD_ERROR, "Edición");
+            }
+        } else {
+            MySwingUtil.mostrarMensaje("La tabla está vacía", MySwingUtil.TD_ERROR, "Edición");
         }
-        
-    }//GEN-LAST:event_jBtnCrearCta1ActionPerformed
+
+    }//GEN-LAST:event_jBtnEditarCtaActionPerformed
 
     private void jBtnDelClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDelClienteActionPerformed
-        // TODO add your handling code here:
+        if (jTblCliente.getRowCount() > 0) {
+            // que se haya seleccionado un elemento
+            if (jTblCliente.getSelectedRow() != -1) {
+                // obtener el id del elemento a elminar
+                int idUsuario = Integer.parseInt(String.valueOf(jTblCliente.getValueAt(jTblCliente.getSelectedRow(), 0)));
+                // Editar Registro  (Ventana de edición)
+                clienteBl.eliminar(idUsuario);
+                MySwingUtil.mostrarMensaje("Registro eliminado correctamente", MySwingUtil.TD_ERROR, "Borrado");
+            } else {
+                MySwingUtil.mostrarMensaje("No seleccionó ningún registro", MySwingUtil.TD_ERROR, "Borrado");
+            }
+        } else {
+            MySwingUtil.mostrarMensaje("La tabla está vacía", MySwingUtil.TD_ERROR, "Borrado");
+        }
     }//GEN-LAST:event_jBtnDelClienteActionPerformed
 
     private void jBtnDelCtaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnDelCtaActionPerformed
-        // TODO add your handling code here:
+        if (jTblCliente.getRowCount() > 0) {
+            JTable jTbl = jTblCuenta;
+            // que se haya seleccionado un elemento
+            if (jTbl.getSelectedRow() != -1) {
+                // obtener el id del elemento a elminar
+                int idClienteN = Integer.parseInt(String.valueOf(jTbl.getValueAt(jTbl.getSelectedRow(), 0)));
+                int idCuentaN = Integer.parseInt(String.valueOf(jTbl.getValueAt(jTbl.getSelectedRow(), 1)));
+                // Eliminar cuenta
+                CuentaId cuentaId = new CuentaId(idClienteN, idCuentaN);
+                cuentaBl.eliminar(cuentaId);
+                MySwingUtil.mostrarMensaje("Registro eliminado correctamente", MySwingUtil.TD_ERROR, "Borrado");
+            } else {
+                MySwingUtil.mostrarMensaje("No seleccionó ningún registro", MySwingUtil.TD_ERROR, "Borrado");
+            }
+        } else {
+            MySwingUtil.mostrarMensaje("La tabla está vacía", MySwingUtil.TD_ERROR, "Borrado");
+        }
     }//GEN-LAST:event_jBtnDelCtaActionPerformed
 
     private void jBtnRefreshClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRefreshClienteActionPerformed
@@ -361,10 +400,10 @@ public class JfrmPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBtnCrearCliente;
     private javax.swing.JButton jBtnCrearCta;
-    private javax.swing.JButton jBtnCrearCta1;
     private javax.swing.JButton jBtnDelCliente;
     private javax.swing.JButton jBtnDelCta;
     private javax.swing.JButton jBtnEditarCliente;
+    private javax.swing.JButton jBtnEditarCta;
     private javax.swing.JButton jBtnExit;
     private javax.swing.JButton jBtnRefreshCliente;
     private javax.swing.JButton jBtnRefreshCuenta;
@@ -379,7 +418,4 @@ public class JfrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     // End of variables declaration//GEN-END:variables
 
-    
-
-    
 }

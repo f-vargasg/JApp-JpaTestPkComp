@@ -3,6 +3,7 @@ package com.fvgprinc.app.jpatestpkcomp.dl;
 
 import com.fvgprinc.app.jpatestpkcomp.be.Cuenta;
 import com.fvgprinc.app.jpatestpkcomp.be.CuentaId;
+import com.fvgprinc.app.jpatestpkcomp.dl.exceptions.NonexistentEntityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,8 +55,13 @@ public class CuentaDl {
                
     }
 
-    
-
+    public void eliminar(CuentaId cuentaId) {
+        try {
+            cuentaJpa.destroy(cuentaId);
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(CuentaDl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 
 }

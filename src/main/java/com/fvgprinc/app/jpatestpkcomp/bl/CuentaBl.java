@@ -36,6 +36,10 @@ public class CuentaBl {
         return cuentaDl.leerDatosPorId();
     }
 
+    public void eliminar(CuentaId cuentaId) {
+        cuentaDl.eliminar (cuentaId);
+    }
+
     
 
 
