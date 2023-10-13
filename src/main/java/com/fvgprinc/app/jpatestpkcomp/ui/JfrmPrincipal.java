@@ -78,6 +78,7 @@ public class JfrmPrincipal extends javax.swing.JFrame {
 
         jToolBar1.setRollover(true);
 
+        jBtnExit.setIcon(new javax.swing.ImageIcon("C:\\Users\\garfi\\Pictures\\AppImages\\Exit.png")); // NOI18N
         jBtnExit.setText("Salir");
         jBtnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
